@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ "" == "$1" ]; then
+	echo "Specify a task name to switch to"
+	exit 1
+fi
+
+task=$1
+if [[ $task =~ ^task-.* ]]; then
+	task=${task:5}
+fi
+
+git checkout task-$task

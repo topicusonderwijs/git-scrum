@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ "" == "$1" ]; then
+	echo "Specify a task name to merge with testing or --continue to continue merging"
+	exit 1
+fi
+
+if [ "--continue" != "$1" ]; then
+	task=$1
+	if [[ $task =~ ^task-.* ]]; then
+		task=${task:5}
+	fi
+
+	echo Starting "'"task-$task"'"
+
+	git checkout testing
+	git merge --no-ff --no-edit -m "Mark task-$task for testing" task-$task
+
+	rc=$?
+	if [[ $rc != 0 ]]; then
+		echo " - Fix the merge conflicts"
+		echo " - run 'git add -A' or 'git add <file>'"
+		echo " - run 'git commit'"
+		echo " - run 'git test-task --continue'"
+		exit 1
+	fi
+fi
+
+remote=$(git config "branch.master.remote")
+git push $remote testing
