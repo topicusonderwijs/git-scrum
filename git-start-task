@@ -5,12 +5,13 @@ if [ "" == "$1" ]; then
 	exit 1
 fi
 
-if [[ $1 =~ ^task-.* ]]; then
-	$1=${1:5}
+task=$1
+if [[ $task =~ ^task-.* ]]; then
+	task=${task:5}
 fi
 
-echo Starting "'"task-$1"'"
+echo Starting "'"task-$task"'"
 
 remote=$(git config "branch.master.remote")
-git checkout -b task-$1 master
-git push -u $remote task-$1
+git checkout -b task-$task master
+git push -u $remote task-$task

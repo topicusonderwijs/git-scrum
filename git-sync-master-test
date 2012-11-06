@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo Sync''ing master and testing
+echo Sync"'"ing master and testing
 
 remote=$(git config "branch.master.remote")
 git checkout master
