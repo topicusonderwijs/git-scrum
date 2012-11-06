@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo Sync''ing master and testing
+
+remote=$(git config "branch.master.remote")
+git checkout master
+git merge --no-ff testing
+git checkout testing
+git merge --ff-only master
+
+git push $remote master testing
+git checkout master
