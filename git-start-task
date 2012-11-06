@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "" == "$1" ]; then
+	echo "Specify a task name to start"
+	exit 1
+fi
+
+if [[ $1 =~ ^task-.* ]]; then
+	$1=${1:5}
+fi
+
+echo Starting "'"task-$1"'"
+
+remote=$(git config "branch.master.remote")
+git checkout -b task-$1 master
+git push -u $remote task-$1
