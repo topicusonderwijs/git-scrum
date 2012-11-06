@@ -1,41 +1,36 @@
 #!/bin/bash
 
 if [ "" == "$1" ]; then
-	echo "Specify a task name to merge with testing or --continue to continue merging"
+	echo "Specify a task name to mark done or --continue to continue merging"
 	exit 1
 fi
 
-pretestfile="$(git rev-parse --git-dir)/PRETEST_HEAD"
 taskfile="$(git rev-parse --git-dir)/TASK_NAME"
 if [ "--continue" != "$1" ]; then
-	git rev-parse --abbrev-ref HEAD > $pretestfile
-
 	task=$1
 	if [[ $task =~ ^task-.* ]]; then
 		task=${task:5}
 	fi
 	echo $task > $taskfile
 
-	echo Merging "'"task-$task"'" for testing
+	echo Marking "'"task-$task"'" done
 
-	git checkout testing
-	git merge --no-ff --no-edit -m "Mark task-$task for testing" task-$task
+	git checkout master
+	git merge --no-ff --no-edit -m "Mark task-$task done" task-$task
 
 	rc=$?
 	if [[ $rc != 0 ]]; then
 		echo " - Fix the merge conflicts"
 		echo " - run 'git add -A' or 'git add <file>'"
 		echo " - run 'git commit'"
-		echo " - run 'git test-task --continue'"
+		echo " - run 'git task-done --continue'"
 		exit 1
 	fi
 else
 	task=`cat $taskfile`
 fi
 
-oldbranch=`cat $pretestfile`
 rm $taskfile
-rm $pretestfile
 remote=$(git config "branch.master.remote")
-git push $remote testing
-git checkout $oldbranch
+git push $remote master :task-$task
+git branch -d task-$task
