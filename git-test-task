@@ -5,7 +5,10 @@ if [ "" == "$1" ]; then
 	exit 1
 fi
 
+pretestfile="$(git rev-parse --git-dir)/PRETEST_HEAD"
 if [ "--continue" != "$1" ]; then
+	git rev-parse --abbrev-ref HEAD > $pretestfile
+
 	task=$1
 	if [[ $task =~ ^task-.* ]]; then
 		task=${task:5}
@@ -26,5 +29,8 @@ if [ "--continue" != "$1" ]; then
 	fi
 fi
 
+oldbranch=`cat $pretestfile`
+rm $pretestfile
 remote=$(git config "branch.master.remote")
 git push $remote testing
+git checkout $oldbranch
