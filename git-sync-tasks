@@ -12,3 +12,5 @@ git checkout testing
 git merge $remote/testing
 
 git push --all $remote
+
+git checkout $curbranch

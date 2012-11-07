@@ -19,6 +19,12 @@ if [ "--continue" != "$1" ]; then
 	if [[ $task =~ ^task-.* ]]; then
 		task=${task:5}
 	fi
+
+	if [ -n "`git rev-list "testing..task-$task"`" ]; then
+		echo "Not all commits are tested, test-task first"
+		exit 1
+	fi
+
 	echo $task > $taskfile
 
 	echo Marking "'"task-$task"'" done
@@ -38,7 +44,7 @@ else
 	task=`cat $taskfile`
 fi
 
-rm $taskfile
+# rm $taskfile
 remote=$(git config "branch.master.remote")
 git push $remote master :task-$task
 git branch -d task-$task
