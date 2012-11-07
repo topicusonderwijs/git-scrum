@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 git sync-tasks
 
 if [ "" == "$1" ]; then
@@ -27,10 +29,8 @@ if [ "--continue" != "$1" ]; then
 	echo Merging "'"task-$task"'" for testing
 
 	git checkout testing
-	git merge --no-ff --no-edit -m "Mark task-$task for testing" task-$task
-
-	rc=$?
-	if [[ $rc != 0 ]]; then
+	if ! git merge --no-ff --no-edit -m "Mark task-$task for testing" task-$task
+	then
 		echo " - Fix the merge conflicts"
 		echo " - run 'git add -A' or 'git add <file>'"
 		echo " - run 'git commit'"

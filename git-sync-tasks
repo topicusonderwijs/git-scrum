@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 remote=$(git config "branch.master.remote")
 curbranch=$(git rev-parse --abbrev-ref HEAD)
 
