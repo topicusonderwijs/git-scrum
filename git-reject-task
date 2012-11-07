@@ -1,6 +1,14 @@
 #!/bin/bash
 
+git sync-tasks
+
 if [ "" == "$1" ]; then
 	echo "Specify a task name to reject"
+	exit 1
+fi
+
+changes=`git status --porcelain | wc -l`
+if [ $changes -gt 0 ]; then
+	echo "Stash or commit your changes first"
 	exit 1
 fi
