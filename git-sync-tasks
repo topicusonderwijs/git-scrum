@@ -13,6 +13,10 @@ git merge $remote/master
 git checkout testing
 git merge $remote/testing
 
+for i in `git list-tasks --local`; do
+	git fast-forward task-$i
+done
+
 git push --all $remote
 
 git checkout $curbranch

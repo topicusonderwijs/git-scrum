@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+if [ "--local" == "$1" ]; then
+	git branch --list task\* | cut -f2- -d-
+else
+	remote=$(git config "branch.master.remote")
+	git branch -r --list $remote/task\* | cut -f2- -d/ | cut -f2- -d-
+fi
