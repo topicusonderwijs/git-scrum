@@ -2,7 +2,7 @@
 
 set -e
 
-git sync-tasks
+git task-sync
 
 if [ "" == "$1" ]; then
 	echo "Specify a task name to merge with testing or --continue to continue merging"

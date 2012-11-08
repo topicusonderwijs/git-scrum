@@ -2,7 +2,7 @@
 
 set -e
 
-git sync-tasks
+git task-sync
 
 if [ "" == "$1" ]; then
 	echo "Specify a task name to switch to"

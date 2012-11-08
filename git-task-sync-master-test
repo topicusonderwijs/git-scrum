@@ -2,7 +2,7 @@
 
 set -e
 
-git sync-tasks
+git task-sync
 
 changes=`git status --porcelain | wc -l`
 if [ $changes -gt 0 ]; then

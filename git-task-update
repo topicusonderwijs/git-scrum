@@ -2,7 +2,7 @@
 
 set -e
 
-git sync-tasks
+git task-sync
 
 if [ "" == "$1" ]; then
 	echo "Specify a task name to reject"
@@ -14,3 +14,7 @@ if [ $changes -gt 0 ]; then
 	echo "Stash or commit your changes first"
 	exit 1
 fi
+
+remote=$(git config "branch.master.remote")
+git checkout task-$task
+git merge $remote/master
