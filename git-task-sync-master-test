@@ -4,12 +4,6 @@ set -e
 
 git task-sync
 
-changes=`git status --porcelain | wc -l`
-if [ $changes -gt 0 ]; then
-	echo "Stash or commit your changes first"
-	exit 1
-fi
-
 echo Sync"'"ing master and testing
 
 remote=$(git config "branch.master.remote")

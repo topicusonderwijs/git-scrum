@@ -2,18 +2,12 @@
 
 set -e
 
-git task-sync
-
 if [ "" == "$1" ]; then
 	echo "Specify a task name to start"
 	exit 1
 fi
 
-changes=`git status --porcelain | wc -l`
-if [ $changes -gt 0 ]; then
-	echo "Stash or commit your changes first"
-	exit 1
-fi
+git task-sync
 
 task=$1
 if [[ $task =~ ^task-.* ]]; then

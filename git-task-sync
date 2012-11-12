@@ -2,6 +2,12 @@
 
 set -e
 
+changes=`git status --porcelain | wc -l`
+if [ $changes -gt 0 ]; then
+	echo "Stash or commit your changes first"
+	exit 1
+fi
+
 remote=$(git config "branch.master.remote")
 curbranch=$(git rev-parse --abbrev-ref HEAD)
 
