@@ -10,7 +10,7 @@ fi
 git task-sync
 
 task=$1
-if [[ $task =~ ^task-.* ]]; then
+if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
 

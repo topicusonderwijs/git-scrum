@@ -15,7 +15,7 @@ if [ "--continue" != "$1" ]; then
 	git rev-parse --abbrev-ref HEAD > $pretestfile
 
 	task=$1
-	if [[ $task =~ ^task-.* ]]; then
+	if [[ $task == task-* ]]; then
 		task=${task:5}
 	fi
 	echo $task > $taskfile

@@ -12,7 +12,7 @@ git task-sync
 taskfile="$(git rev-parse --git-dir)/TASK_NAME"
 if [ "--continue" != "$1" ]; then
 	task=$1
-	if [[ $task =~ ^task-.* ]]; then
+	if [[ $task == task-* ]]; then
 		task=${task:5}
 	fi
 
