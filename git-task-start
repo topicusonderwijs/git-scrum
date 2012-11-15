@@ -19,3 +19,4 @@ echo Starting "'"task-$task"'"
 remote=$(git config "branch.master.remote")
 git checkout -b task-$task master
 git push -u $remote task-$task
+git config --unset branch.task-$task.rebase
