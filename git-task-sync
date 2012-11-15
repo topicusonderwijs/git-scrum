@@ -19,7 +19,7 @@ git merge $remote/master
 git checkout testing
 git merge $remote/testing
 
-for i in `git task-list --local`; do
+for i in `git task-list --local --simple`; do
 	git fast-forward task-$i
 done
 

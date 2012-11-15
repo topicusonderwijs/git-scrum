@@ -2,10 +2,10 @@
 
 set -e
 
+remote=$(git config "branch.master.remote")
 if [ "--local" == "$1" ]; then
 	tasks=`git branch --list task\* | cut -f2- -d-`
 else
-	remote=$(git config "branch.master.remote")
 	tasks=`git branch -r --list $remote/task\* | cut -f2- -d/ | cut -f2- -d-`
 fi
 
@@ -29,5 +29,9 @@ for task in $tasks; do
 			fi
 		fi
 	fi
-	echo "$task  [$status] ($aheadtesting not in testing; $aheadmaster not in master)"
+	if [ "--simple" == "$2" ]; then
+		echo $task
+	else
+		echo "$task  [$status] ($aheadtesting not in testing; $aheadmaster not in master)"
+	fi
 done
