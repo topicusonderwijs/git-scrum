@@ -20,7 +20,7 @@ git checkout testing
 git merge $remote/testing
 
 for i in `git task-list --local --simple`; do
-	git config --unset branch.task-$i.rebase
+	git config --unset branch.task-$i.rebase || true
 	git fast-forward task-$i
 done
 

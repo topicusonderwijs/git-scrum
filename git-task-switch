@@ -15,4 +15,4 @@ if [[ $task == task-* ]]; then
 fi
 
 git checkout task-$task
-git config --unset branch.task-$task.rebase
+git config --unset branch.task-$task.rebase || true
