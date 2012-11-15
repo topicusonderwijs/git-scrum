@@ -17,7 +17,7 @@ if [ "--continue" != "$1" ]; then
 	fi
 
 	if [ -n "`git rev-list "testing..task-$task"`" ]; then
-		echo "Not all commits are tested, test-task first"
+		echo "Not all commits are tested, task-test first"
 		exit 1
 	fi
 

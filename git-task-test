@@ -28,7 +28,7 @@ if [ "--continue" != "$1" ]; then
 		echo " - Fix the merge conflicts"
 		echo " - run 'git add -A' or 'git add <file>'"
 		echo " - run 'git commit'"
-		echo " - run 'git test-task --continue'"
+		echo " - run 'git task-test --continue'"
 		exit 1
 	fi
 else
