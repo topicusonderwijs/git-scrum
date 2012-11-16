@@ -13,15 +13,20 @@ curbranch=$(git rev-parse --abbrev-ref HEAD)
 
 git fetch --prune
 
-git checkout master
-git merge $remote/master
-
 git checkout testing
 git merge $remote/testing
 
+git checkout master
+git merge $remote/master
+
 for i in `git task-list --local --simple`; do
-	git config --unset branch.task-$i.rebase || true
-	git fast-forward task-$i
+	if ! git branch -r | grep -q $remote/task-$i
+	then
+		git branch -d task-$i
+	else
+		git config --unset branch.task-$i.rebase || true
+		git fast-forward task-$i
+	fi
 done
 
 git push --all $remote

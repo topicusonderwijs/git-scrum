@@ -9,6 +9,7 @@ fi
 
 git task-sync
 
+remote=$(git config "branch.master.remote")
 taskfile="$(git rev-parse --git-dir)/TASK_NAME"
 if [ "--continue" != "$1" ]; then
 	task=$1
@@ -16,7 +17,7 @@ if [ "--continue" != "$1" ]; then
 		task=${task:5}
 	fi
 
-	if [ -n "`git rev-list "testing..task-$task"`" ]; then
+	if [ -n "`git rev-list "testing..$remote/task-$task"`" ]; then
 		echo "Not all commits are tested, task-test first"
 		exit 1
 	fi
@@ -26,7 +27,7 @@ if [ "--continue" != "$1" ]; then
 	echo Marking "'"task-$task"'" done
 
 	git checkout master
-	if ! git merge --no-ff --no-edit -m "Mark task-$task done" task-$task
+	if ! git merge --no-ff --no-edit -m "Mark task-$task done" $remote/task-$task
 	then
 		echo " - Fix the merge conflicts"
 		echo " - run 'git add -A' or 'git add <file>'"
@@ -38,7 +39,6 @@ else
 	task=`cat $taskfile`
 fi
 
-# rm $taskfile
-remote=$(git config "branch.master.remote")
+rm $taskfile
 git push $remote master :task-$task
-git branch -d task-$task
+git branch -d task-$task || true
