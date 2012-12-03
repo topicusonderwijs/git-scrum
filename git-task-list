@@ -13,8 +13,8 @@ for task in $tasks; do
 	if [ "--simple" == "$2" ]; then
 		echo $task
 	else
-		aheadtesting=`git rev-list "testing..$remote/task-$task" --no-merges | wc -l`
-		aheadmaster=`git rev-list "master..$remote/task-$task" --no-merges | wc -l`
+		aheadtesting=`git rev-list "$remote/testing..$remote/task-$task" --no-merges | wc -l`
+		aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
 		if [ "$aheadtesting" -eq "0" ]; then
 			if [ "$aheadmaster" -eq "0" ]; then
 				status="not-started"
