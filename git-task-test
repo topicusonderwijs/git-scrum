@@ -23,14 +23,14 @@ fi
 stat=`git task-status $task`
 behindmaster=`git rev-list "$remote/task-$task..$remote/master" --no-merges | wc -l`
 
-if [ "$status" != "busy" ]; then
-	echo "Task $task is not busy: $status"
+if [ "$stat" != "busy" ]; then
+	echo "Task $task is not busy: $stat"
 	exit 1
 fi
 
 if [ "$behindmaster" -gt "0" ]; then
-	echo "Task $task is $behindmaster behind master, run git task-update $task first"
+	echo "Task $task is $behindmaster commit behind master, run git task-update $task first"
 	exit 1
 fi
 
-git push $remote task-$task:env-$2
+git push --force $remote task-$task:env-$2

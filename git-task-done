@@ -17,8 +17,9 @@ if [ "--continue" != "$1" ]; then
 		task=${task:5}
 	fi
 
-	if [ -n "`git rev-list "testing..$remote/task-$task"`" ]; then
-		echo "Not all commits are tested, task-test first"
+	stat=`git task-status $task`
+	if [[ $stat != testing* ]]; then
+		echo "Task is not in testing, run git task-test first"
 		exit 1
 	fi
 
