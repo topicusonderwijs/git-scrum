@@ -13,25 +13,8 @@ for task in $tasks; do
 	if [ "--simple" == "$2" ]; then
 		echo $task
 	else
-		aheadtesting=`git rev-list "$remote/testing..$remote/task-$task" --no-merges | wc -l`
+		stat=`git task-status $task`
 		aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
-		if [ "$aheadtesting" -eq "0" ]; then
-			if [ "$aheadmaster" -eq "0" ]; then
-				status="not-started"
-			else
-				status="testing"
-			fi
-		else
-			if [ "$aheadmaster" -eq "0" ]; then
-				status="cheated"
-			else
-				if [ "$aheadmaster" -eq "$aheadtesting" ]; then
-					status="busy"
-				else
-					status="rejected"
-				fi
-			fi
-		fi
-		echo "$task  [$status] ($aheadtesting not in testing; $aheadmaster not in master)"
+		echo "$task  [$stat] ($aheadmaster commits ahead of master)"
 	fi
 done

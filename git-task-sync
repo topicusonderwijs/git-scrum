@@ -13,9 +13,6 @@ curbranch=$(git rev-parse --abbrev-ref HEAD)
 
 git fetch --prune
 
-git checkout testing
-git merge $remote/testing
-
 git checkout master
 git merge $remote/master
 

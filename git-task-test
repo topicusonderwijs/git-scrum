@@ -3,41 +3,34 @@
 set -e
 
 if [ "" == "$1" ]; then
-	echo "Specify a task name to merge with testing or --continue to continue merging"
+	echo "Specify a task name to test"
+	exit 1
+fi
+
+if [ "" == "$2" ]; then
+	echo "Specify an environment (number) to test on"
 	exit 1
 fi
 
 git task-sync
 
-pretestfile="$(git rev-parse --git-dir)/PRETEST_HEAD"
-taskfile="$(git rev-parse --git-dir)/TASK_NAME"
-if [ "--continue" != "$1" ]; then
-	git rev-parse --abbrev-ref HEAD > $pretestfile
-
-	task=$1
-	if [[ $task == task-* ]]; then
-		task=${task:5}
-	fi
-	echo $task > $taskfile
-
-	echo Merging "'"task-$task"'" for testing
-
-	git checkout testing
-	if ! git merge --no-ff --no-edit -m "Mark task-$task for testing" task-$task
-	then
-		echo " - Fix the merge conflicts"
-		echo " - run 'git add -A' or 'git add <file>'"
-		echo " - run 'git commit'"
-		echo " - run 'git task-test --continue'"
-		exit 1
-	fi
-else
-	task=`cat $taskfile`
+remote=$(git config "branch.master.remote")
+task=$1
+if [[ $task == task-* ]]; then
+	task=${task:5}
 fi
 
-oldbranch=`cat $pretestfile`
-rm $taskfile
-rm $pretestfile
-remote=$(git config "branch.master.remote")
-git push $remote testing
-git checkout $oldbranch
+stat=`git task-status $task`
+behindmaster=`git rev-list "$remote/task-$task..$remote/master" --no-merges | wc -l`
+
+if [ "$status" != "busy" ]; then
+	echo "Task $task is not busy: $status"
+	exit 1
+fi
+
+if [ "$behindmaster" -gt "0" ]; then
+	echo "Task $task is $behindmaster behind master, run git task-update $task first"
+	exit 1
+fi
+
+git push $remote task-$task:env-$2

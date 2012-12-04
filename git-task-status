@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+if [ "" == "$1" ]; then
+	echo "No task specified"
+	exit 1
+fi
+
+remote=$(git config "branch.master.remote")
+task=$1
+if [[ $task == task-* ]]; then
+	task=${task:5}
+fi
+
+aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
+envs=`git branch -r --list $remote/env-\* | cut -f2- -d/ | cut -f2- -d-`
+for env in $envs; do
+	envhash=`git rev-parse $remote/env-$env`
+	taskhash=`git rev-parse $remote/task-$task`
+	if [[ "$envhash" == "$taskhash" ]]; then
+		echo "testing on env-$env"
+		exit 0
+	fi
+done
+
+if [ "$aheadmaster" -eq "0" ]; then
+	echo "not-started"
+else
+	echo "busy"
+fi
