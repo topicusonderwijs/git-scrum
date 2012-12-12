@@ -18,7 +18,7 @@ if [ "--continue" != "$1" ]; then
 	fi
 
 	stat=`git task-status $task`
-	if [[ $stat != testing* ]]; then
+	if [[ $stat != *env-* ]]; then
 		echo "Task is not in testing, run git task-test first"
 		exit 1
 	fi
