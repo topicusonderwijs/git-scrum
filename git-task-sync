@@ -9,12 +9,10 @@ if [ $changes -gt 0 ]; then
 fi
 
 remote=$(git config "branch.master.remote")
-curbranch=$(git rev-parse --abbrev-ref HEAD)
 
 git fetch --prune
 
-git checkout master
-git merge $remote/master
+git fast-forward master
 
 for i in `git task-list --local --simple`; do
 	if ! git branch -r | grep -q $remote/task-$i
@@ -27,5 +25,3 @@ for i in `git task-list --local --simple`; do
 done
 
 git push --all $remote
-
-git checkout $curbranch
