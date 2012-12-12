@@ -20,7 +20,7 @@ for i in `git task-list --local --simple`; do
 		git branch -d task-$i
 	else
 		git config --unset branch.task-$i.rebase || true
-		git fast-forward task-$i
+		git fast-forward task-$i || true
 	fi
 done
 

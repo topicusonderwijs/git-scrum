@@ -1,5 +1,6 @@
 #!/bin/bash
 
+curbranch=$(git rev-parse --symbolic-full-name HEAD)
 from=`git rev-parse --symbolic-full-name "$1"`
 if [ "" != "$2" ]; then
 	tobranch=$2
@@ -11,7 +12,11 @@ to=`git rev-parse --symbolic-full-name "$tobranch"`
 if [ -n "`git rev-list "$to..$from"`" ]
 then
 	echo "`git rev-parse --abbrev-ref $from` has local commits; can't fast-forward"
-	exit
+	exit 1
 fi
 
-git update-ref -m ff-branch "$from" "$to"
+if [ "$curbranch" != "$from" ]; then
+	git update-ref -m ff-branch "$from" "$to"
+else
+	git merge --ff-only "$to"
+fi
