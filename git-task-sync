@@ -17,7 +17,12 @@ git fast-forward master
 for i in `git task-list --local --simple`; do
 	if ! git branch -r | grep -q $remote/task-$i
 	then
-		git branch -d task-$i
+		ahead=`git rev-list "$remote/master..task-$i" | wc -l`
+		if [ "$ahead" -eq "0" ]; then
+			git branch -D task-$i
+		else
+			git branch -d task-$i
+		fi
 	else
 		git config --unset branch.task-$i.rebase || true
 		git fast-forward task-$i || true
