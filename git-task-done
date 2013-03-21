@@ -19,8 +19,12 @@ if [ "--continue" != "$1" ]; then
 
 	stat=`git task-status $task`
 	if [[ $stat != *env-* ]]; then
-		echo "Task is not in testing, run git task-test first"
-		exit 1
+		if [[ $2 == --force ]]; then
+			echo "Task is not in testing, marking it done anyway"
+		else
+			echo "Task is not in testing, run git task-test first or use --force"
+			exit 1
+		fi
 	fi
 
 	echo $task > $taskfile
