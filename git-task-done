@@ -53,15 +53,17 @@ else
 	task=`cat $taskfile`
 fi
 
-env=`expr "$stat" : 'testing on env-\(.*\)'`
-tasks=`git branch -r --list $remote/task\* | cut -f2- -d/ | cut -f2- -d-`
-for curtask in $tasks; do
-	curstat=`git task-status $curtask`
-	if [ "merged in env-$env" == "$curstat" ]; then
-		git push $remote :task-$curtask
-		git branch -d task-$curtask || true
-	fi
-done
+if [[ $2 != --force ]]; then
+	env=`expr "$stat" : 'testing on env-\(.*\)'`
+	tasks=`git branch -r --list $remote/task\* | cut -f2- -d/ | cut -f2- -d-`
+	for curtask in $tasks; do
+		curstat=`git task-status $curtask`
+		if [ "merged in env-$env" == "$curstat" ]; then
+			git push $remote :task-$curtask
+			git branch -d task-$curtask || true
+		fi
+	done
+fi
 
 git push $remote master :task-$task
 git branch -d task-$task || true
