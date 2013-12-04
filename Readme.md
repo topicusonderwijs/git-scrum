@@ -36,4 +36,4 @@ The *release branch* tracks the last result from a sprint and can be used for th
     
     git task-update $ID
     git task-test $ID 2
-    git task done $ID
+    git task-done $ID
