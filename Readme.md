@@ -16,15 +16,15 @@ The *release branch* tracks the last result from a sprint and can be used for th
 
 ## Commands
 
-- `task-done` - merge the feature branch into master and delete it
-- `task-list` - list all tasks and their status (both you and colleagues)
-- `task-reject` - same as task-sync
 - `task-start` - create a new remote+local feature branch
-- `task-status` - display the status of a single task (done, busy, ...)
-- `task-switch` - Switch between tasks (feature branches)
-- `task-sync` - synchronize with upstream and remove branches that have already been fully merged into master
 - `task-test`- push a task that is busy to a testing branch
+- `task-done` - merge the feature branch into master and delete it
+- `task-sync` - synchronize with upstream and remove branches that have already been fully merged into master
+- `task-list` - list all tasks and their status (both you and colleagues)
+- `task-switch` - Switch between tasks (feature branches)
 - `task-update` - merge the commits in master back into your feature branch
+- `task-status` - display the status of a single task (done, busy, ...)
+- `task-reject` - not used anymore
 
 ## Example workflow
 
@@ -34,11 +34,6 @@ The *release branch* tracks the last result from a sprint and can be used for th
     git add hello.exe
     git commit
     
-    git task-update
-    git task-test
-    git task done
-    
-    git task-sync
-
-
-
+    git task-update $ID
+    git task-test $ID 2
+    git task done $ID
