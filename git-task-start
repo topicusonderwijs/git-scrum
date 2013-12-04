@@ -1,13 +1,14 @@
 #!/bin/bash
 
 set -e
+source $(dirname $0)/common.sh
 
 if [ "" == "$1" ]; then
 	echo "Specify a task name to start"
 	exit 1
 fi
 
-git task-sync
+git task-sync || ( echo "git-task-sync failed"; exit 1 )
 
 task=$1
 if [[ $task == task-* ]]; then

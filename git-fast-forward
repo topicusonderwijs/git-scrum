@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+source $(dirname $0)/common.sh
+
 curbranch=$(git rev-parse --symbolic-full-name HEAD)
 from=`git rev-parse --symbolic-full-name "$1"`
 if [ "" != "$2" ]; then
