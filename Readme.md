@@ -1,5 +1,14 @@
 # Git scripts to simplify development using feature branches (Scrum tasks)
 
+## Installation
+
+Clone this repository to a location you can easily get to, e.g. `$HOME/bin/git-scrum`.
+
+Add the cloned folder to your path, e.g. in your .bash_profile add:
+
+    export PATH=$HOME/bin/git-scrum:$PATH
+
+Restart your shell (or `source ~/.bash_profile`) to activate your new path and there you go.
 
 ## Overview
 
