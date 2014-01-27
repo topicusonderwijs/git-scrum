@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-source $(dirname $0)/common.sh
+source $(dirname $0)/_git-common.sh
 
 if [ "" == "$1" ]; then
 	echo "Specify a task name to test"
