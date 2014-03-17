@@ -9,15 +9,16 @@ if [ $changes -gt 0 ]; then
 	exit 1
 fi
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.v2.38.remote")
 
 git fetch --prune
+git fast-forward v2.38
 git fast-forward master
 
 for i in `git task-list --local --simple`; do
 	if ! git branch -r | grep -q $remote/task-$i
 	then
-		ahead=`git rev-list "$remote/master..task-$i" | wc -l`
+		ahead=`git rev-list "$remote/v2.38..task-$i" | wc -l`
 		if [ "$ahead" -eq "0" ]; then
 			git branch -D task-$i
 		else

@@ -15,14 +15,14 @@ fi
 
 git task-sync
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.v2.38.remote")
 task=$1
 if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
 
 stat=`git task-status $task`
-behindmaster=`git rev-list "$remote/task-$task..$remote/master" --no-merges | wc -l`
+behindmaster=`git rev-list "$remote/task-$task..$remote/v2.38" --no-merges | wc -l`
 
 if [ "$stat" != "busy" ]; then
 	echo "Task $task is not busy: $stat"
@@ -30,7 +30,7 @@ if [ "$stat" != "busy" ]; then
 fi
 
 if [ "$behindmaster" -gt "0" ]; then
-	echo "Task $task is $behindmaster commit behind master, run git task-update $task first"
+	echo "Task $task is $behindmaster commit behind v2.38, run git task-update $task first"
 	exit 1
 fi
 

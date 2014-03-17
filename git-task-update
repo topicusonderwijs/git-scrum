@@ -15,6 +15,6 @@ if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.v2.38.remote")
 git checkout task-$task
-git merge $remote/master
+git merge $remote/v2.38

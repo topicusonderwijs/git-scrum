@@ -10,7 +10,7 @@ fi
 
 git task-sync
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.v2.38.remote")
 taskfile="$(git rev-parse --git-dir)/TASK_NAME"
 if [ "--continue" != "$1" ]; then
 	task=$1
@@ -32,7 +32,7 @@ if [ "--continue" != "$1" ]; then
 
 	echo Marking "'"task-$task"'" done
 
-	git checkout master
+	git checkout v2.38
 	if ! git merge --no-ff --no-edit -m "Mark task-$task done" $remote/task-$task
 	then
 		echo " - Fix the merge conflicts"
@@ -55,7 +55,7 @@ for curtask in $tasks; do
 	fi
 done
 
-git push $remote master :task-$task
+git push $remote v2.38 :task-$task
 git branch -d task-$task || true
 
 rm $taskfile

@@ -3,7 +3,7 @@
 set -e
 source "${0%[\\/]*}"/_git-common.sh
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.v2.38.remote")
 if [ "--local" == "$1" ]; then
 	tasks=`git branch --list task\* | cut -f2- -d-`
 else
@@ -15,8 +15,8 @@ for task in $tasks; do
 		echo $task
 	else
 		stat=`git task-status $task`
-		aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
-		behindmaster=`git rev-list "$remote/task-$task..$remote/master" --no-merges | wc -l`
-		printf '%-15s [%-16s] %4d behind/%4d ahead of master\n' "$task" "$stat" "$behindmaster" "$aheadmaster"
+		aheadmaster=`git rev-list "$remote/v2.38..$remote/task-$task" --no-merges | wc -l`
+		behindmaster=`git rev-list "$remote/task-$task..$remote/v2.38" --no-merges | wc -l`
+		printf '%-15s [%-16s] %4d behind/%4d ahead of v2.38\n' "$task" "$stat" "$behindmaster" "$aheadmaster"
 	fi
 done

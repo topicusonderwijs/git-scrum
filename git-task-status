@@ -8,13 +8,13 @@ if [ "" == "$1" ]; then
 	exit 1
 fi
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.v2.38.remote")
 task=$1
 if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
 
-aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
+aheadmaster=`git rev-list "$remote/v2.38..$remote/task-$task" --no-merges | wc -l`
 if [ "$aheadmaster" -eq "0" ]; then
 	echo "not-started"
 else
