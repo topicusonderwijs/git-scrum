@@ -15,6 +15,7 @@ fi
 
 git task-sync
 
+task=$curtask
 if [[ $curtask == task-* ]]; then
 	task=${curtask:5}
 fi
