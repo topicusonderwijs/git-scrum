@@ -3,16 +3,20 @@
 set -e
 source "${0%[\\/]*}"/_git-common.sh
 
+curtask=$1
 if [ "" == "$1" ]; then
-	echo "Specify a task name to update"
-	exit 1
+	curtask=$(git rev-parse --abbrev-ref HEAD)
+
+	if [ "master" == $curtask ]; then
+		echo "Specify a task name to update"
+		exit 1
+	fi
 fi
 
 git task-sync
 
-task=$1
-if [[ $task == task-* ]]; then
-	task=${task:5}
+if [[ $curtask == task-* ]]; then
+	task=${curtask:5}
 fi
 
 remote=$(git config "branch.master.remote")

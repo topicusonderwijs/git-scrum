@@ -3,20 +3,29 @@
 set -e
 source "${0%[\\/]*}"/_git-common.sh
 
-if [ "" == "$1" ]; then
-	echo "Specify a task name to test"
-	exit 1
+
+curtask=$1
+test_env=$2
+if [ "" == "$2" ]; then
+        curtask=$(git rev-parse --abbrev-ref HEAD)
+
+        if [ "master" == $curtask ]; then
+                echo "Specify a task name to test"
+                exit 1
+        fi
+	test_env=$1
 fi
 
-if [ "" == "$2" ]; then
-	echo "Specify an environment (number) to test on"
-	exit 1
+if [ "" == "$test_env" ]; then
+       	echo "Specify an environment (number) to test on"
+        exit 1
 fi
+
 
 git task-sync
 
 remote=$(git config "branch.master.remote")
-task=$1
+task=$curtask
 if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
@@ -34,4 +43,4 @@ if [ "$behindmaster" -gt "0" ]; then
 	exit 1
 fi
 
-git push --force $remote task-$task:env-$2
+git push --force $remote task-$task:env-$test_env

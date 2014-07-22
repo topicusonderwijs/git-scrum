@@ -3,17 +3,25 @@
 set -e
 source "${0%[\\/]*}"/_git-common.sh
 
+curtask=$1
 if [ "" == "$1" ]; then
-	echo "Specify a task name to mark done or --continue to continue merging"
-	exit 1
+        curtask=$(git rev-parse --abbrev-ref HEAD)
+
+        if [ "master" == $curtask ]; then
+		echo "Specify a task name to mark done or --continue to continue merging"
+		exit 1
+        fi
 fi
+
+
+
 
 git task-sync
 
 remote=$(git config "branch.master.remote")
 taskfile="$(git rev-parse --git-dir)/TASK_NAME"
 if [ "--continue" != "$1" ]; then
-	task=$1
+	task=$curtask
 	if [[ $task == task-* ]]; then
 		task=${task:5}
 	fi
