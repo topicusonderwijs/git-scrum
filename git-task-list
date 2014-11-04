@@ -17,6 +17,7 @@ for task in $tasks; do
 		stat=`git task-status $task`
 		aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
 		behindmaster=`git rev-list "$remote/task-$task..$remote/master" --no-merges | wc -l`
-		printf '%-15s [%-16s] %4d behind/%4d ahead of master\n' "$task" "$stat" "$behindmaster" "$aheadmaster"
+		author=`git shortlog -s -n --no-merges "$remote/master..$remote/task-$task" | cut -f 2- | head -n 1`
+		printf '%-20s [%-16s] %4d behind/%4d ahead of master   %s\n' "$task" "$stat" "$behindmaster" "$aheadmaster" "$author"
 	fi
 done
