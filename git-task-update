@@ -3,6 +3,9 @@
 set -e
 source "${0%[\\/]*}"/_git-common.sh
 
+echo "Under construction! Momenteel handmatig de source branch mergen"
+exit 1
+
 task=$1
 if [ "" == "$1" ]; then
 	task=$(git rev-parse --abbrev-ref HEAD)
