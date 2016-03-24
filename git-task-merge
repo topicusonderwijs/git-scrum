@@ -3,6 +3,11 @@
 set -e
 source "${0%[\\/]*}"/_git-common.sh
 
+echo "Under construction! Momenteel handmatig de feature branch mergen"
+exit 1
+
+#=========== HIER ONDER oude done script
+
 curtask=$1
 if [ "" == "$1" ]; then
         curtask=$(git rev-parse --abbrev-ref HEAD)
