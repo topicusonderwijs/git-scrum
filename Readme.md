@@ -1,50 +1,45 @@
 # Git Scrum
 
-Git scripts to simplify development using feature branches (Scrum tasks).
+Git scripts om het ontwikkelen met EduArte te vergemakkelijken.
 
-## Installation
+## Installatie
 
-Clone this repository to a location you can easily get to, e.g. `$HOME/bin/git-scrum`.
+Clone deze repository op een locatie waar je er makkelijk bij kan `$HOME/scripts/git-scrum`.
 
-Add the cloned folder to your path, e.g. in your `.bash_profile` add:
+Voeg de directory toe aan je path, b.v. voeg toe in jouw `.bash_profile`:
 
     export PATH=$HOME/bin/git-scrum:$PATH
 
-Restart your shell (or `source ~/.bash_profile`) to activate your new path and there you go.
+Start jouw shell opnieuw op om van het nieuwe pad gebruik te maken.
 
 ## Overview
 
-There are 4 types of branches in this setup:
+Er zijn 4 source/bron branches:
 
-1. master
-2. feature branches (tasks)
-3. test branch(es)
-4. release branch
+1. master/release (volgende release)
+2. valuepack (volgende value pack)
+3. acceptatie (patches voor de acceptatie versie)
+4. patch (patches voor de productie versie)
 
-Development takes place in *feature branches* that correspond to Scrum *tasks*. A feature branche is merged back into master after it has been tested and approved by the product owner. In theory this should mean that *master* is always stable. Bug-fixing for *tasks* that have already been merged into *master* (this shouldn't happen often) are done directly on *master*.
-The *release branch* tracks the last result from a sprint and can be used for the product demo.
-*Test branches* are used to test an in-progress task on an external environment (for example, a Jenkins task that periodically pulls, builds and tests the *test branch*).
+Ontwikkeling vindt plaats op een *feature branch* op basis van 1 van de bovengenoemde branches.
+Er is ook nog een productie branch, hier wordt niet op ontwikkeld.
 
-## Commands
+## Commando's
+- `task-start` - maak een feature branch (geef aan welke source branch je gebruikt)
+- `task-update` - merge de source branch in jouw feature branch
+- `task-merge` - merge de feature branch naar de source branch en verwijder de feature branch
+- `task-switch` - wissel tussen tasks (feature branches)
+- `task-sync` - synchroniseer met upstream en verwijder branches die niet meer bestaan
+- `task-list` - geef een lijst van alle openstaande feature branches
+- `task-status` - geef de status van een specifieke task (done, busy, ...)
 
-- `task-start` - create a new remote+local feature branch
-- `task-test`- push a task that is busy to a testing branch
-- `task-done` - merge the feature branch into master and delete it
-- `task-sync` - synchronize with upstream and remove branches that have already been fully merged into master
-- `task-list` - list all tasks and their status (both you and colleagues)
-- `task-switch` - Switch between tasks (feature branches)
-- `task-update` - merge the commits in master back into your feature branch
-- `task-status` - display the status of a single task (done, busy, ...)
-- `task-reject` - not used anymore
-
-## Example workflow
+## Workflow
 
     git task-start $ID
     
-    echo "hello world" > hello.exe
-    git add hello.exe
+    echo "hello world" > hello.txt
+    git add hello.txt
     git commit
     
     git task-update $ID
-    git task-test $ID 2
-    git task-done $ID
+    git task-merge $ID
