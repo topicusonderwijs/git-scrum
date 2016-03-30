@@ -9,7 +9,11 @@ if [ $changes -gt 0 ]; then
 	exit 1
 fi
 
-branchMenu
+if [ "$1" == "" ]; then
+	branchMenu
+else
+	srcBranch=$1
+fi
 
 remote=$(git config "branch.$srcBranch.remote"||true)
 if [ "$remote" == "" ]; then

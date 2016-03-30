@@ -6,7 +6,8 @@ handle_error() {
 }
 
 function branchMenu() {
-	if [ -z $srcBranch ]; then
+	echo srcBranch:$srcBranch
+	if [ -n "$srcBranch" ]; then
 		exit 0;
 	fi
 
