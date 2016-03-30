@@ -8,7 +8,11 @@ from=`git rev-parse --symbolic-full-name "$1"`
 if [ "" != "$2" ]; then
 	tobranch=$2
 else
-	tobranch=`git config branch."$1".remote`/$1
+	remote=$(git config "branch.$1.remote"||true)
+	if [ "$remote" == "" ]; then
+		remote="origin"
+	fi
+	tobranch=$remote/$1
 fi
 to=`git rev-parse --symbolic-full-name "$tobranch"`
 

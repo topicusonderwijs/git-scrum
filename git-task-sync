@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 source "${0%[\\/]*}"/_git-common.sh
 
 changes=`git status --porcelain | wc -l`
@@ -9,15 +9,20 @@ if [ $changes -gt 0 ]; then
 	exit 1
 fi
 
-remote=$(git config "branch.master.remote")
+branchMenu
+
+remote=$(git config "branch.$srcBranch.remote"||true)
+if [ "$remote" == "" ]; then
+	remote="origin"
+fi
 
 git fetch --prune
-git fast-forward master
+git fast-forward $srcBranch
 
 for i in `git task-list --local --simple`; do
 	if ! git branch -r | grep -q $remote/task-$i
 	then
-		ahead=`git rev-list "$remote/master..task-$i" | wc -l`
+		ahead=`git rev-list "$remote/$srcBranch..task-$i" | wc -l`
 		if [ "$ahead" -eq "0" ]; then
 			git branch -D task-$i
 		else
