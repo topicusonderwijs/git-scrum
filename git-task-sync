@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 source "${0%[\\/]*}"/_git-common.sh
 
 changes=`git status --porcelain | wc -l`
