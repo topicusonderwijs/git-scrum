@@ -3,7 +3,7 @@
 set -e
 source "${0%[\\/]*}"/_git-common.sh
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -lt 1 ]; then
     echo "Usage: git task-start [source-branch] [task-]name"
     exit 1
 fi

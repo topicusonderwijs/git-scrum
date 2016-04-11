@@ -23,7 +23,7 @@ fi
 git fetch --prune
 git fast-forward $srcBranch
 
-for i in `git task-list --local --simple`; do
+for i in "$(git task-list --local --simple)"; do
 	if ! git branch -r | grep -q $remote/task-$i
 	then
 		ahead=`git rev-list "$remote/$srcBranch..task-$i" | wc -l`
