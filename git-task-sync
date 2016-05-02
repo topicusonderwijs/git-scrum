@@ -9,19 +9,17 @@ if [ $changes -gt 0 ]; then
 	exit 1
 fi
 
-if [ "$1" == "" ]; then
-	branchMenu
-else
-	srcBranch=$1
-fi
-
 remote=$(git config "branch.$srcBranch.remote"||true)
 if [ "$remote" == "" ]; then
 	remote="origin"
 fi
 
 git fetch --prune
-git fast-forward $srcBranch
+for src in master acceptatie valuepack patch productie; do
+	if git branch | grep -q $src; then
+		git fast-forward $src
+	fi
+done
 
 for i in "$(git task-list --local --simple)"; do
 	if ! git branch -r | grep -q $remote/task-$i
