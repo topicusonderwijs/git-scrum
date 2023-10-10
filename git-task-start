@@ -2,6 +2,7 @@
 
 set -e
 source "${0%[\\/]*}"/_git-common.sh
+main=$(git config --get init.defaultbranch)
 
 if [ "" == "$1" ]; then
 	echo "Specify a task name to start"
@@ -17,7 +18,7 @@ fi
 
 echo Starting "'"task-$task"'"
 
-remote=$(git config "branch.master.remote")
-git checkout -b task-$task master
+remote=$(git config "branch.$main.remote")
+git checkout -b task-$task $main
 git push -u $remote task-$task
 git config --unset branch.task-$task.rebase || true

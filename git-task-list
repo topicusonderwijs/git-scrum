@@ -2,8 +2,9 @@
 
 set -e
 source "${0%[\\/]*}"/_git-common.sh
+main=$(git config --get init.defaultbranch)
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.$main.remote")
 if [ "--local" == "$1" ]; then
 	tasks=`git branch --list task\* | cut -f2- -d-`
 else
@@ -15,9 +16,9 @@ for task in $tasks; do
 		echo $task
 	else
 		stat=`git task-status $task`
-		aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
-		behindmaster=`git rev-list "$remote/task-$task..$remote/master" --no-merges | wc -l`
-		author=`git shortlog -s -n --no-merges "$remote/master..$remote/task-$task" | cut -f 2- | head -n 1`
-		printf '%-20s [%-16s] %4d behind/%4d ahead of master   %s\n' "$task" "$stat" "$behindmaster" "$aheadmaster" "$author"
+		aheadmain=`git rev-list "$remote/$main..$remote/task-$task" --no-merges | wc -l`
+		behindmain=`git rev-list "$remote/task-$task..$remote/$main" --no-merges | wc -l`
+		author=`git shortlog -s -n --no-merges "$remote/$main..$remote/task-$task" | cut -f 2- | head -n 1`
+		printf '%-20s [%-16s] %4d behind/%4d ahead of %s   %s\n' "$task" "$stat" "$behindmain" "$aheadmain" "$main" "$author"
 	fi
 done

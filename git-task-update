@@ -2,12 +2,13 @@
 
 set -e
 source "${0%[\\/]*}"/_git-common.sh
+main=$(git config --get init.defaultbranch)
 
 task=$1
 if [ "" == "$1" ]; then
 	task=$(git rev-parse --abbrev-ref HEAD)
 
-	if [ "master" == $task ]; then
+	if [ $main == $task ]; then
 		echo "Specify a task name to update"
 		exit 1
 	fi
@@ -19,6 +20,6 @@ if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.$main.remote")
 git checkout task-$task
-git merge $remote/master
+git merge $remote/$main

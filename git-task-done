@@ -2,12 +2,13 @@
 
 set -e
 source "${0%[\\/]*}"/_git-common.sh
+main=$(git config --get init.defaultbranch)
 
 curtask=$1
 if [ "" == "$1" ]; then
         curtask=$(git rev-parse --abbrev-ref HEAD)
 
-        if [ "master" == $curtask ]; then
+        if [ $main == $curtask ]; then
 		echo "Specify a task name to mark done or --continue to continue merging"
 		exit 1
         fi
@@ -18,7 +19,7 @@ fi
 
 git task-sync
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.$main.remote")
 taskfile="$(git rev-parse --git-dir)/TASK_NAME"
 if [ "--continue" != "$1" ]; then
 	task=$curtask
@@ -40,7 +41,7 @@ if [ "--continue" != "$1" ]; then
 
 	echo Marking "'"task-$task"'" done
 
-	git checkout master
+	git checkout $main
 	if ! git merge --no-ff --no-edit -m "Mark task-$task done" $remote/task-$task
 	then
 		echo " - Fix the merge conflicts"
@@ -65,7 +66,7 @@ if [[ $2 != --force ]]; then
 	done
 fi
 
-git push $remote master :task-$task
+git push $remote $main :task-$task
 git branch -d task-$task || true
 
 rm $taskfile

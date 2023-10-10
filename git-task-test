@@ -2,14 +2,14 @@
 
 set -e
 source "${0%[\\/]*}"/_git-common.sh
-
+main=$(git config --get init.defaultbranch)
 
 curtask=$1
 test_env=$2
 if [ "" == "$2" ]; then
         curtask=$(git rev-parse --abbrev-ref HEAD)
 
-        if [ "master" == $curtask ]; then
+        if [ $main == $curtask ]; then
                 echo "Specify a task name to test"
                 exit 1
         fi
@@ -24,22 +24,22 @@ fi
 
 git task-sync
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.$main.remote")
 task=$curtask
 if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
 
 stat=`git task-status $task`
-behindmaster=`git rev-list "$remote/task-$task..$remote/master" --no-merges | wc -l`
+behindmain=`git rev-list "$remote/task-$task..$remote/$main" --no-merges | wc -l`
 
 if [ "$stat" != "busy" ]; then
 	echo "Task $task is not busy: $stat"
 	exit 1
 fi
 
-if [ "$behindmaster" -gt "0" ]; then
-	echo "Task $task is $behindmaster commit behind master, run git task-update $task first"
+if [ "$behindmain" -gt "0" ]; then
+	echo "Task $task is $behindmain commit behind $main, run git task-update $task first"
 	exit 1
 fi
 

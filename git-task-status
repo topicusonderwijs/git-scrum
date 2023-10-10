@@ -2,20 +2,21 @@
 
 set -e
 source "${0%[\\/]*}"/_git-common.sh
+main=$(git config --get init.defaultbranch)
 
 if [ "" == "$1" ]; then
 	echo "No task specified"
 	exit 1
 fi
 
-remote=$(git config "branch.master.remote")
+remote=$(git config "branch.$main.remote")
 task=$1
 if [[ $task == task-* ]]; then
 	task=${task:5}
 fi
 
-aheadmaster=`git rev-list "$remote/master..$remote/task-$task" --no-merges | wc -l`
-if [ "$aheadmaster" -eq "0" ]; then
+aheadmain=`git rev-list "$remote/$main..$remote/task-$task" --no-merges | wc -l`
+if [ "$aheadmain" -eq "0" ]; then
 	echo "not-started"
 else
 	envs=`git branch -r --list $remote/env-\* | cut -f2- -d/ | cut -f2- -d-`
