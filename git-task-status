@@ -2,7 +2,7 @@
 
 set -e
 source "${0%[\\/]*}"/_git-common.sh
-main=$(git config --get init.defaultbranch)
+main=$(git rev-parse --abbrev-ref origin/HEAD | cut -f2 -d/)
 
 if [ "" == "$1" ]; then
 	echo "No task specified"
